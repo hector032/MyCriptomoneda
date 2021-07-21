@@ -1,0 +1,1 @@
+URL_CRIPTO="https://pro-api.coinmarketcap.com/v1/tools/price-conversion?CMC_PRO_API_KEY=4d311452-f2f8-4830-83a9-0afc89c923b3"

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Nuevo{% endblock %}
+
+{% block contenido %}
+<h1>Purchase Cryptos  </h1>
+<form action="/compra" method="post">
+    <fieldset class="container">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.moneda_from.label(class="mylabel") }}
+            {{ form.moneda_from() }}
+            {% for error in form.moneda_from.errors %}
+                <p class="msg-err">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+        <div >
+            {{ form.cantidad_from.label(class="mylabel") }}
+            {{ form.cantidad_from() }}
+            {% for error in form.cantidad_from.errors %}
+                <p class="msg-err">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+        <div >
+            {{ form.moneda_to.label(class="mylabel") }}
+            {{ form.moneda_to() }}
+            {% for error in form.moneda_to.errors %}
+                <p class="msg-err">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+        <div>
+            {{form.calcular_cripto}}
+        </div>
+        <br><br>
+        <p>***************************************************************************************************************************</p>
+        <br><br>
+        
+        <div >
+            {{ form.cantidad_to.label(class="mylabel") }}
+            {{ form.cantidad_to(readonly=True, value=cantidadFinal) }}
+        </div>
+        <div >
+            {{ form.pu.label(class="mylabel") }}
+            {{ form.pu(readonly=True, value=precioUnidad)}}
+
+        </div>
+        <br>
+    </fieldset>
+    {{ form.submit()}}
+</form>                   
+
+{% endblock %}

@@ -1,0 +1,6 @@
+venv/
+**/__pycache__/
+.env
+mycripto.db
+.vscode/
+config.py

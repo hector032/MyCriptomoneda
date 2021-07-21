@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCripto | {% block titulo %}{% endblock %}</title>
+    <link rel="stylesheet" href="static/css/mini-default.css">
+    <link rel="stylesheet" href="static/css/styles.css">
+
+</head>
+<body>
+    <header>
+        Proyecto Final - BZ VII
+    </header>
+    {% with mensajes = get_flashed_messages(with_categories = true) %}
+        {% if mensajes %}
+        <div class="popup">
+            {% for tipo, mensaje in mensajes %}
+            <p class="{{tipo}}">{{ mensaje }}</p>
+            {% endfor %}
+        </div>
+        {% endif%}
+    {% endwith %}
+    <div class="navegacion">
+        <p><a href="/">Inicio</a> / <a href="compra">Comprar</a> / <a href="status">Status</a></p>
+    </div>
+    <section class="container">
+        {% block contenido %} {% endblock %}
+    </section>
+    <footer>
+        &copy; Todos los derechos reservados 2021 
+    </footer>
+</body>
+</html>
