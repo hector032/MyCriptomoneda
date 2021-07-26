@@ -33,7 +33,7 @@ def index():
     return render_template('movimientos.html', datos = movimientos)
 
 
-@app.route('/compra', methods=["GET", "POST"])
+@app.route('/purchase', methods=["GET", "POST"])
 def compra():
     formulario=MovimientosForm()
 
@@ -77,8 +77,6 @@ def compra():
             if formulario.moneda_from.data == formulario.moneda_to.data:
                 flash("no puedes tranformar una critomoneda en la misma cripto")
                 return render_template('purchase.html', form=formulario)            
-            #Verificamos que no sea un string o lagun simbolo o este separado por comas ( , )
-
             #Verificamos que la cantidad from no sea menor o igual a 0
             elif formulario.cantidad_from.data <= 0:
                 flash("la cantidad tiene que ser mayor que 0")
@@ -96,7 +94,7 @@ def compra():
                 datos = [monedaFrom]
                 resultado = dbManager.consultaMuchasSQL(query, datos)
                 saldo=verificar_saldo_por_moneda(monedaFrom)
-                if saldo < float(formulario.cantidad_from.data):
+                if saldo < float(formulario.cantidad_from.data) and monedaFrom != 'EUR':
                     flash("Tienes {} {}, para realizar la compra de {} necesitas mas {}" . format(saldo, monedaFrom,  formulario.moneda_to.data, monedaFrom))
                     return render_template('purchase.html', form=formulario)
 
@@ -137,4 +135,6 @@ def status():
     euros_invertidos= saldo_euros_invertidos()
     valor_criptos=valor_todas_criptos_euros()    
     valor_Actual = invertido+euros_invertidos+valor_criptos
+    #valor_Actual = valor_criptos
     return render_template('status.html', form = formulario,inversion=invertido,valorActual=valor_Actual)
+    #return render_template('status.html', form = formulario,inversion=invertido,valorActual=valor_Actual)

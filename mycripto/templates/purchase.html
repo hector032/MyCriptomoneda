@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Nuevo{% endblock %}
+{% block titulo %}Purchase{% endblock %}
 
 {% block contenido %}
 <h1>Purchase Cryptos  </h1>
-<form action="/compra" method="post">
+<form action="/purchase" method="post">
     <fieldset class="container">
         {{ form.hidden_tag() }}
         <div>
@@ -18,7 +18,7 @@
         </div>
         <div >
             {{ form.cantidad_from.label(class="mylabel") }}
-            {{ form.cantidad_from() }}
+            {{ form.cantidad_from(type="number") }}
             {% for error in form.cantidad_from.errors %}
                 <p class="msg-err">
                     {{ error }}
@@ -38,7 +38,6 @@
             {{form.calcular_cripto}}
         </div>
         <br><br>
-        <p>***************************************************************************************************************************</p>
         <br><br>
         
         <div >

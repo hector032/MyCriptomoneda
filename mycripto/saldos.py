@@ -47,31 +47,47 @@ def total_euros_invertidos():
 def valor_todas_criptos_euros():
     formulario=MovimientosForm()
     valorEnEuroPorCriptoMoneda = 0
-    criptomonedas = ['EUR', 'ETH', 'LTC', 'BNB', 'EOS', 'XLM','TRX','BTC','XRP','BCH','USDT','BSV','ADA']
+    criptomonedas = [ 'ETH', 'LTC', 'BNB', 'EOS', 'XLM','TRX','BTC','XRP','BCH','BSV','ADA']
     for moneda in criptomonedas:
-        query =  "SELECT sum(cantidad_to) - sum(cantidad_from) AS valor_todas_criptos_euros FROM movimientos WHERE moneda_from =? AND moneda_to =?;"
-        resultado = dbManager.consultaMuchasSQL(query,[moneda,moneda])
-        
-        if len(resultado) > 0 :
-            saldo_por_moneda=resultado[0]['valor_todas_criptos_euros']
 
-            #Hacemos la llamada a la APi para aplicar el convert
-            url_convert = api.URL_CRIPTO
-            parameters = {
-                    'amount':saldo_por_moneda,
-                    'symbol':moneda,
-                    'convert':'EUR'
-            }
-            try:
-                    response = requests.get(url_convert, params = parameters)
-                    if response.status_code==200:
-                        data=response.json()
-                        if data["status"]["error_code"] != 0:
-                            flash("Error de conversion en la API: " + data["status"]["error_message"])
-                            return render_template('status.html', form = formulario)
-                        else:                            
-                            valorEnEuroPorCriptoMoneda += data["data"]["quote"][moneda]["price"]                
-            except (ConnectionError) as e:
-                print(e)
+        query1 =  "SELECT sum(cantidad_to) as total_to FROM movimientos WHERE moneda_to =? ;"
+        resultado1 = dbManager.consultaMuchasSQL(query1,[moneda])
+
+        query2= "SELECT sum(cantidad_from) as total_from FROM movimientos WHERE moneda_from =? ;" 
+        resultado2 = dbManager.consultaMuchasSQL(query2,[moneda])
+        
+        compras = 0
+        if len(resultado1) > 0 and resultado1[0]['total_to'] != None   :
+            compras = resultado1[0]['total_to']
+    
+        ventas = 0
+        if len(resultado2) > 0 and resultado2[0]['total_from'] != None :
+            ventas = resultado2[0]['total_from']
+        
+        saldo_por_moneda = 0
+        if compras > 0 or ventas > 0:       
+            saldo_por_moneda=compras - ventas
+        
+        if saldo_por_moneda > 0:
+            
+                #Hacemos la llamada a la APi para aplicar el convert
+                url_convert = api.URL_CRIPTO
+                parameters = {
+                        'amount':saldo_por_moneda,
+                        'symbol':moneda,
+                        'convert':'EUR'
+                }
+                try:
+                        response = requests.get(url_convert, params = parameters)
+                        if response.status_code==200:
+                            data=response.json()
+                            if data["status"]["error_code"] != 0:
+                                flash("Error de conversion en la API: " + data["status"]["error_message"])
+                                return render_template('status.html', form = formulario)
+                            else:
+                                #print (data)                     
+                                valorEnEuroPorCriptoMoneda += data["data"]["quote"]["EUR"]["price"]                
+                except (ConnectionError) as e:
+                    print(e)
     return valorEnEuroPorCriptoMoneda
 

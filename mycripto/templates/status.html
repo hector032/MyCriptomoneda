@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Nuevo{% endblock %}
+{% block titulo %}Status{% endblock %}
 
 {% block contenido %}
 <h1>Estado de la inversion  </h1>
@@ -8,11 +8,11 @@
     <fieldset class="container">
         <div>
             <label for="invertido">Invertido</label>
-            <input disabled type="text" name="invertido" value ={{inversion}}>
+            <input disabled type="text" name="invertido" value ={{inversion}} €>
         </div>
         <div >
             <label for="valor actual">valor actual</label>
-            <input  disabled type="text" name="valor actual" value={{valorActual}}>
+            <input  disabled type="text" name="valor actual" value={{valorActual}} €>
         </div>
     </fieldset>
 </form>
